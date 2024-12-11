@@ -1,15 +1,18 @@
-import { Column, Entity, JoinColumn, OneToOne } from 'typeorm';
+import { Column, Entity, ManyToOne, PrimaryColumn } from 'typeorm';
 import { Org } from './org.entity';
+import { User } from 'src/app/user/entities/user.entity';
 
 @Entity({ name: 'wallet' })
 export class Wallet {
-  @Column({ type: 'varchar', unique: true })
+  @PrimaryColumn({ type: 'varchar', unique: true })
   walletId: string;
 
   @Column({ type: 'varchar' })
   chainInfo: string;
 
-  @OneToOne(() => Org)
-  @JoinColumn({ name: 'org_id' })
+  @ManyToOne(() => Org, (org) => org.orgId)
   org: Org;
+
+  @ManyToOne(() => User, (user) => user.userId)
+  user: User;
 }
