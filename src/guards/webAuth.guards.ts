@@ -1,5 +1,5 @@
 import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
-import { JwtAuthService } from 'src/helpers/jwt.helpers.service';
+import { JwtAuthService } from '@helpers/jwt.helpers.service';
 
 @Injectable()
 export class WebAuthGuard implements CanActivate {

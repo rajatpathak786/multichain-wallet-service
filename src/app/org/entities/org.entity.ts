@@ -1,6 +1,6 @@
-import { Column, Entity, JoinColumn, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
-import { Wallet } from './wallet.entity';
-import { User } from 'src/app/user/entities/user.entity';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Wallet } from '@wallet/entities/wallet.entity';
+import { User } from '@user/entities/user.entity';
 
 @Entity({ name: 'org' })
 export class Org {

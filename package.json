@@ -77,6 +77,18 @@
   "moduleNameMapper": {
     "^@wallet/(.*)": [
       "<rootDir>/app/wallet/$1"
+    ],
+    "^@user/(.*)": [
+      "<rootDir>/app/user/$1"
+    ],
+    "^@org/(.*)": [
+      "<rootDir>/app/org/$1"
+    ],
+    "^@helpers/(.*)": [
+      "<rootDir>/helpers/$1"
+    ],
+    "^@guards/(.*)": [
+      "<rootDir>/guards/$1"
     ]
   }
 }

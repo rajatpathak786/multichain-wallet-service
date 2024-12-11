@@ -1,6 +1,6 @@
 import { Column, Entity, ManyToOne, PrimaryColumn } from 'typeorm';
-import { Org } from './org.entity';
-import { User } from 'src/app/user/entities/user.entity';
+import { Org } from '@org/entities/org.entity';
+import { User } from '@user/entities/user.entity';
 
 @Entity({ name: 'wallet' })
 export class Wallet {

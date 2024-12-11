@@ -2,7 +2,7 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Req } fro
 import { WalletService } from './wallet.service';
 import { CreateWalletDto } from './dto/create-wallet.dto';
 import { UpdateWalletDto } from './dto/update-wallet.dto';
-import { JwtAuthService } from 'src/helpers/jwt.helpers.service';
+import { JwtAuthService } from '@helpers/jwt.helpers.service';
 import { WebAuthGuard } from 'src/guards/webAuth.guards';
 
 @Controller('wallet')

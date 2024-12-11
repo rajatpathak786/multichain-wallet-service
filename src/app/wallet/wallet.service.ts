@@ -1,11 +1,25 @@
 import { Injectable } from '@nestjs/common';
 import { CreateWalletDto } from './dto/create-wallet.dto';
 import { UpdateWalletDto } from './dto/update-wallet.dto';
+import { WalletRepositoryService } from './entities/wallet.repository.service';
 
 @Injectable()
 export class WalletService {
-  create(createWalletDto: CreateWalletDto) {
-    return 'This action adds a new wallet';
+  constructor(
+    private readonly walletRepositoryService: WalletRepositoryService
+  ){}
+  async create(createWalletDto: CreateWalletDto) {
+    try {
+      //TODO: Create wallet via rpc
+
+      const createWallet = await this.walletRepositoryService.create(createWalletDto);      
+      return {
+        message: `Wallet successfully created`,
+        data: { ...createWallet },
+      };
+    } catch (error) {
+      throw new Error(error);
+    }
   }
 
   findAll() {

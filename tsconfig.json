@@ -16,6 +16,14 @@
     "noImplicitAny": false,
     "strictBindCallApply": false,
     "forceConsistentCasingInFileNames": false,
-    "noFallthroughCasesInSwitch": false
+    "noFallthroughCasesInSwitch": false,
+    "resolveJsonModule": true,
+    "paths": {
+      "@wallet/*": ["src/app/wallet/*"],
+      "@user/*": ["src/app/user/*"],
+      "@org/*": ["src/app/org/*"],
+      "@guards/*": ["src/guards/*"],
+      "@helpers/*": ["src/helpers/*"],
+    }
   }
 }

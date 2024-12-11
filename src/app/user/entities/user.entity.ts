@@ -1,5 +1,5 @@
-import { Org } from 'src/app/wallet/entities/org.entity';
-import { Wallet } from 'src/app/wallet/entities/wallet.entity';
+import { Org } from '@org/entities/org.entity';
+import { Wallet } from '@wallet/entities/wallet.entity';
 import {
   Column,
   Entity,

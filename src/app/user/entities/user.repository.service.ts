@@ -13,8 +13,9 @@ export class UserRepositoryService {
     return await this.user.find();
   }
 
-  async create(data: any): Promise<User> {
-    return this.user.save(data);
+  async create(data: Partial<User>): Promise<User> {
+    const newUser = this.user.create(data);
+    return this.user.save(newUser);
   }
 
   async findById(id: string): Promise<User> {
