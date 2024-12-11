@@ -1,11 +1,27 @@
 import { Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { UserRepositoryService } from './entities/user.repository.service';
+import { JwtAuthService } from 'src/helpers/jwt.helpers.service';
 
 @Injectable()
 export class UserService {
-  create(createUserDto: CreateUserDto) {
-    return 'This action adds a new user';
+  constructor(
+    private readonly userRepositoryService: UserRepositoryService,
+    private readonly jwtAuthService: JwtAuthService,
+  ) {}
+  async create(createUserDto: CreateUserDto) {
+    try {
+      const createUser = await this.userRepositoryService.create(createUserDto);
+      const { accessToken, refreshToken } =
+        await this.jwtAuthService.generateToken(createUser.userId);
+      return {
+        message: `User successfully created`,
+        data: { ...createUser, accessToken, refreshToken },
+      };
+    } catch (error) {
+      throw new Error(error);
+    }
   }
 
   findAll() {

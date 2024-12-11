@@ -13,7 +13,7 @@ export class User {
   @PrimaryGeneratedColumn('uuid')
   userId: string;
 
-  @Column({ type: 'varchar' })
+  @Column({ type: 'varchar', unique: true })
   userName: string;
 
   @ManyToOne(() => Org, (org) => org.orgId)
