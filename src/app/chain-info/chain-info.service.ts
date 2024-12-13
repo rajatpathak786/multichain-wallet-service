@@ -4,6 +4,8 @@ import { UpdateChainInfoDto } from './dto/update-chain-info.dto';
 import { ChainInfoRepositoryService } from './entities/chain-info.repository.service';
 import { IApiResponse } from '@lib/interface';
 import { ChainInfo } from './entities/chain-info.entity';
+import { chainInfoResponseMessages } from '@lib/constants';
+import { ChainName } from '@lib/enum';
 
 @Injectable()
 export class ChainInfoService {
@@ -15,9 +17,9 @@ export class ChainInfoService {
   ): Promise<IApiResponse<ChainInfo>> {
     try {
       const newChainInfo =
-        await this.chainInfoRepositoryService.create(createChainInfoDto);
+        await this.chainInfoRepositoryService.create(createChainInfoDto as any);
       return {
-        message: `New Chain Info Added`,
+        message: chainInfoResponseMessages.chainInfoAdded,
         data: newChainInfo,
       };
     } catch (error) {
@@ -27,10 +29,9 @@ export class ChainInfoService {
 
   async findAll(): Promise<IApiResponse<ChainInfo[]>> {
     try {
-      const chainInfo =
-        await this.chainInfoRepositoryService.findAll();
+      const chainInfo = await this.chainInfoRepositoryService.findAll();
       return {
-        message: `All Chain Infos Fetched Successfully`,
+        message: chainInfoResponseMessages.fetchAllChainInfoSuccess,
         data: chainInfo,
       };
     } catch (error) {
@@ -38,12 +39,12 @@ export class ChainInfoService {
     }
   }
 
-  async findOne(chainName: string): Promise<IApiResponse<ChainInfo>> {
+  async findOne(chainName: ChainName): Promise<IApiResponse<ChainInfo>> {
     try {
       const chainInfo =
         await this.chainInfoRepositoryService.findByName(chainName);
       return {
-        message: `Chain Info Fetched Successfully`,
+        message: chainInfoResponseMessages.fetchChainInfo,
         data: chainInfo,
       };
     } catch (error) {

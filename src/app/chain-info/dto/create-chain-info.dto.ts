@@ -1,16 +1,16 @@
 import { IsString, IsNotEmpty, IsEnum } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
-import { Chain } from '@lib/enum';
+import { ChainName } from '@lib/enum';
 
 export class CreateChainInfoDto {
   @ApiProperty({
     description: `Chain name`,
-    example: Chain.SepoliaTestnet,
+    example: ChainName.SEPOLIA_TESTNET,
     required: true,
   })
-  @IsString()
+  @IsEnum(ChainName)
   @IsNotEmpty()
-  chainName: string;
+  chainName: ChainName;
 
   @ApiProperty({
     description: `Chain rpc Url`,

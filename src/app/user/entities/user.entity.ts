@@ -19,6 +19,6 @@ export class User {
   @ManyToOne(() => Org, (org) => org.orgId)
   org: Org;
 
-  @OneToMany(() => Wallet, (wallet) => wallet.walletId)
+  @OneToMany(() => Wallet, (wallet) => wallet.walletAddress)
   wallets: Wallet[];
 }

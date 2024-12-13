@@ -8,15 +8,20 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from '../user/entities/user.entity';
 import { Wallet } from './entities/wallet.entity';
 import { WalletRepositoryService } from './entities/wallet.repository.service';
+import { EVMHelper } from '@helpers/evm.helpers.service';
+import { ChainInfoRepositoryService } from '@chain-info/entities/chain-info.repository.service';
+import { ChainInfo } from '@chain-info/entities/chain-info.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([User, Wallet]), JwtModule],
+  imports: [TypeOrmModule.forFeature([User, Wallet, ChainInfo]), JwtModule],
   controllers: [WalletController],
   providers: [
     WalletService,
     UserRepositoryService,
     WalletRepositoryService,
+    ChainInfoRepositoryService,
     JwtAuthService,
+    EVMHelper,
   ],
 })
 export class WalletModule {}

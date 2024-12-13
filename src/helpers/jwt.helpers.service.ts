@@ -40,7 +40,6 @@ export class JwtAuthService {
 
   async validateToken(request: Request): Promise<boolean> {
     const authHeader = request.headers?.authorization;
-    console.log(authHeader);
     if (!authHeader || !authHeader.startsWith('Bearer ')) {
       throw new UnauthorizedException(
         'Invalid or missing authorization header',

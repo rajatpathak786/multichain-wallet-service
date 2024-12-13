@@ -1,4 +1,4 @@
-import { Chain } from '@lib/enum';
+import { ChainName } from '@lib/enum';
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity({ name: 'chain-info' })
@@ -6,13 +6,13 @@ export class ChainInfo {
   @PrimaryGeneratedColumn('uuid')
   chainId: string;
 
-  @Column({ type: 'varchar', unique: true })
-  chainName: string;
+  @Column({ type: 'enum', enum: ChainName })
+  chainName: ChainName;
 
   @Column({ type: 'varchar' })
   rpcUrl: string;
 
   //TODO: Need to check if we'll need to map chain with the associated wallets
-  //   @OneToMany(() => Wallet, (wallet) => wallet.walletId)
+  //   @OneToMany(() => Wallet, (wallet) => wallet.walletAddress)
   //   wallets: Wallet[];
 }

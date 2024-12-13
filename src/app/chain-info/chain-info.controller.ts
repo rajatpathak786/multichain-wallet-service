@@ -12,6 +12,7 @@ import { CreateChainInfoDto } from './dto/create-chain-info.dto';
 import { UpdateChainInfoDto } from './dto/update-chain-info.dto';
 import { IApiResponse } from '@lib/interface';
 import { ChainInfo } from './entities/chain-info.entity';
+import { ChainName } from '@lib/enum';
 
 @Controller('chain-info')
 export class ChainInfoController {
@@ -30,7 +31,7 @@ export class ChainInfoController {
   }
 
   @Get(':id')
-  findOne(@Param('name') name: string): Promise<IApiResponse<ChainInfo>> {
+  findOne(@Param('name') name: ChainName): Promise<IApiResponse<ChainInfo>> {
     return this.chainInfoService.findOne(name);
   }
 

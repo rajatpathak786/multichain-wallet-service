@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { ChainInfo } from './chain-info.entity';
+import { ChainName } from '@lib/enum';
 
 @Injectable()
 export class ChainInfoRepositoryService {
@@ -18,7 +19,7 @@ export class ChainInfoRepositoryService {
     return this.chainInfo.save(newChain);
   }
 
-  async findByName(chainName: string): Promise<ChainInfo> {
+  async findByName(chainName: ChainName): Promise<ChainInfo> {
     return await this.chainInfo.findOneBy({ chainName });
   }
 }

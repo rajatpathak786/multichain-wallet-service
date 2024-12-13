@@ -18,7 +18,10 @@ export class WalletRepositoryService {
     return this.wallet.save(newWallet);
   }
 
-  async findById(id: string): Promise<Wallet> {
-    return await this.wallet.findOneBy({ walletId: id });
+  async findByAddress(walletAddress: string): Promise<Wallet> {
+    return await this.wallet.findOne({
+      where: { walletAddress },
+      relations: ['user', 'chainInfo', 'org'],
+    });
   }
 }

@@ -10,7 +10,7 @@ export class Org {
   @Column({ type: 'varchar' })
   orgName: string;
 
-  @OneToMany(() => Wallet, (wallet) => wallet.walletId)
+  @OneToMany(() => Wallet, (wallet) => wallet.walletAddress)
   wallets: Wallet[];
 
   @OneToMany(() => User, (user) => user.userId)
