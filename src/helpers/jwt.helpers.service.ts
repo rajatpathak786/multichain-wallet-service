@@ -1,8 +1,9 @@
-// import { AdminService } from '@admin-auth/entity/admin.service';
+import { IJwtTokenResponse, IRequest } from '@lib/interface';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { UserRepositoryService } from '@user/entities/user.repository.service';
+import { Request } from 'express';
 
 @Injectable()
 export class JwtAuthService {
@@ -19,9 +20,7 @@ export class JwtAuthService {
   private jwtRefreshExpiry =
     this.configService.get<string>('JWT_REFRESH_EXPIRY');
 
-  async generateToken(
-    userId: string,
-  ): Promise<{ accessToken: string; refreshToken: string }> {
+  async generateToken(userId: string): Promise<IJwtTokenResponse> {
     const accessToken = this.jwtService.sign(
       { id: userId },
       {
@@ -39,9 +38,9 @@ export class JwtAuthService {
     return { accessToken, refreshToken };
   }
 
-  async validateToken(request: any): Promise<boolean> {
+  async validateToken(request: Request): Promise<boolean> {
     const authHeader = request.headers?.authorization;
-
+    console.log(authHeader);
     if (!authHeader || !authHeader.startsWith('Bearer ')) {
       throw new UnauthorizedException(
         'Invalid or missing authorization header',
@@ -59,7 +58,7 @@ export class JwtAuthService {
         throw new UnauthorizedException('Invalid token');
       }
 
-      request.userId = user.userId;
+      (request as IRequest).userId = user.userId;
       return true;
     } catch (error) {
       throw new UnauthorizedException('Invalid token');

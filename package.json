@@ -29,6 +29,7 @@
     "@nestjs/swagger": "^8.1.0",
     "@nestjs/typeorm": "^10.0.2",
     "class-validator": "^0.14.1",
+    "ethers": "^6.13.4",
     "pg": "^8.13.1",
     "reflect-metadata": "^0.2.0",
     "rxjs": "^7.8.1",
@@ -84,11 +85,17 @@
     "^@org/(.*)": [
       "<rootDir>/app/org/$1"
     ],
+    "^@chain-info/(.*)": [
+      "<rootDir>/app/chain-info/$1"
+    ],
     "^@helpers/(.*)": [
       "<rootDir>/helpers/$1"
     ],
     "^@guards/(.*)": [
       "<rootDir>/guards/$1"
+    ],
+    "^@lib/(.*)": [
+      "<rootDir>/app/lib/$1"
     ]
   }
 }

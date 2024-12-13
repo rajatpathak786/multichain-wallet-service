@@ -5,6 +5,7 @@ import { UserModule } from './user/user.module';
 import { DatabaseModule } from 'src/db/conn';
 import { ConfigModule } from '@nestjs/config';
 import { OrgModule } from './org/org.module';
+import { ChainInfoModule } from './chain-info/chain-info.module';
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import { OrgModule } from './org/org.module';
       isGlobal: true,
     }),
     OrgModule,
+    ChainInfoModule,
   ],
 })
 export class AppModule {}

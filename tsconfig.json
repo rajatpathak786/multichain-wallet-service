@@ -22,8 +22,10 @@
       "@wallet/*": ["src/app/wallet/*"],
       "@user/*": ["src/app/user/*"],
       "@org/*": ["src/app/org/*"],
+      "@chain-info/*": ["src/app/chain-info/*"],
       "@guards/*": ["src/guards/*"],
       "@helpers/*": ["src/helpers/*"],
+      "@lib/*": ["src/lib/*"]
     }
   }
 }
