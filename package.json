@@ -37,6 +37,7 @@
     "pg": "^8.13.1",
     "reflect-metadata": "^0.2.0",
     "rxjs": "^7.8.1",
+    "swagger-ui-express": "^5.0.1",
     "typeorm": "^0.3.20"
   },
   "devDependencies": {
@@ -83,6 +84,9 @@
   "moduleNameMapper": {
     "^@wallet/(.*)": [
       "<rootDir>/app/wallet/$1"
+    ],
+    "^@token/(.*)": [
+      "<rootDir>/app/token/$1"
     ],
     "^@user/(.*)": [
       "<rootDir>/app/user/$1"

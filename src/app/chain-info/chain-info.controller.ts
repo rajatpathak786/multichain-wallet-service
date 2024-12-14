@@ -13,16 +13,44 @@ import { CreateChainInfoDto } from './dto/create-chain-info.dto';
 import { UpdateChainInfoDto } from './dto/update-chain-info.dto';
 import { IApiResponse } from '@lib/interface';
 import { ChainInfo } from './entities/chain-info.entity';
-import { ChainName } from '@lib/enum';
 import { AdminAuthGuard } from '@guards/admin.guards';
 import { ChainNameParamDto } from './dto/chain-name-param.dto';
+import {
+  ApiBadRequestResponse,
+  ApiBearerAuth,
+  ApiOkResponse,
+  ApiTags,
+  ApiUnauthorizedResponse,
+} from '@nestjs/swagger';
+import {
+  InvalidTokenResponse,
+  ChainAddedError,
+  ChainDetailsAdded,
+  GetAllChainInfosSuccess,
+  GetChainDetailsByNameError,
+  GetChainDetailsByNameSuccess,
+} from '@lib/responses';
 
 @Controller('chain-info')
 @UseGuards(AdminAuthGuard)
+@ApiBearerAuth()
+@ApiTags('Chain-Info Apis')
+@ApiUnauthorizedResponse({
+  description: `Invalid Token`,
+  type: InvalidTokenResponse,
+})
 export class ChainInfoController {
   constructor(private readonly chainInfoService: ChainInfoService) {}
 
   @Post()
+  @ApiOkResponse({
+    description: `Chain Info Added Successfully`,
+    type: ChainDetailsAdded,
+  })
+  @ApiBadRequestResponse({
+    description: 'Bad Request',
+    type: ChainAddedError,
+  })
   create(
     @Body() createChainInfoDto: CreateChainInfoDto,
   ): Promise<IApiResponse<ChainInfo>> {
@@ -30,11 +58,23 @@ export class ChainInfoController {
   }
 
   @Get()
+  @ApiOkResponse({
+    description: `Get All Chain Infos`,
+    type: GetAllChainInfosSuccess,
+  })
   findAll() {
     return this.chainInfoService.findAll();
   }
 
-  @Get(':id')
+  @Get(':name')
+  @ApiOkResponse({
+    description: `Get Chain Details By Name`,
+    type: GetChainDetailsByNameSuccess,
+  })
+  @ApiBadRequestResponse({
+    description: 'Get Chain details by name error',
+    type: GetChainDetailsByNameError,
+  })
   findOne(
     @Param('name') name: ChainNameParamDto,
   ): Promise<IApiResponse<ChainInfo>> {

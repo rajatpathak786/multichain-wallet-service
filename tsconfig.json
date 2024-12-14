@@ -23,6 +23,7 @@
       "@user/*": ["src/app/user/*"],
       "@org/*": ["src/app/org/*"],
       "@chain-info/*": ["src/app/chain-info/*"],
+      "^@token/(.*)": ["src/app/token/$1"],
       "@guards/*": ["src/guards/*"],
       "@helpers/*": ["src/helpers/*"],
       "@lib/*": ["src/lib/*"]

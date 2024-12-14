@@ -4,6 +4,7 @@ import * as dotenv from 'dotenv';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { ConfigService } from '@nestjs/config';
 import { Logger, ValidationPipe } from '@nestjs/common';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 dotenv.config({ path: `${process.cwd()}/.env` });
 
@@ -17,9 +18,20 @@ async function bootstrap() {
     cors: { origin: configService.get<string>('ALLOW_ORIGIN') ?? '*' },
   });
   app.useGlobalPipes(new ValidationPipe());
+
+  const config = new DocumentBuilder()
+    .setTitle(configService.get<string>('TITLE'))
+    .setDescription(configService.get<string>('DESCRIPTION'))
+    .setVersion(configService.get<string>('VERSION'))
+    .addBearerAuth()
+    .build();
+
+  const document = SwaggerModule.createDocument(app, config);
+  SwaggerModule.setup('/api-docs', app, document);
+
   const PORT = port ?? '3000';
   await app.listen(PORT, () => {
-    logger.log('wallet service running on port: ' + PORT)
+    logger.log('wallet service running on port: ' + PORT);
   });
 }
 bootstrap();
