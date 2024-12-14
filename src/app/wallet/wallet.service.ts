@@ -3,13 +3,19 @@ import { CreateWalletDto } from './dto/create-wallet.dto';
 import { UpdateWalletDto } from './dto/update-wallet.dto';
 import { WalletRepositoryService } from './entities/wallet.repository.service';
 import { EVMHelper } from '@helpers/evm.helpers.service';
-import { encrypt, generateHash } from '@helpers/encryption.helpers.service';
+import {
+  decrypt,
+  encrypt,
+  generateHash,
+} from '@helpers/encryption.helpers.service';
 import { ChainInfoRepositoryService } from '@chain-info/entities/chain-info.repository.service';
 import { UserRepositoryService } from '@user/entities/user.repository.service';
 import { Wallet } from './entities/wallet.entity';
-import { IApiResponse } from '@lib/interface';
+import { IApiResponse, IWallet } from '@lib/interface';
 import { walletResponseMessages } from '@lib/constants';
 import { handleSuccess } from '@helpers/api-response.helpers.service';
+import { JwtAuthService } from '@helpers/jwt.helpers.service';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class WalletService {
@@ -17,15 +23,17 @@ export class WalletService {
     private readonly walletRepositoryService: WalletRepositoryService,
     private readonly chainInfoRepositoryService: ChainInfoRepositoryService,
     private readonly userRepositoryService: UserRepositoryService,
+    private readonly jwtAuthService: JwtAuthService,
     private readonly evmHelper: EVMHelper,
   ) {}
   async create(
     createWalletDto: CreateWalletDto,
     userId: string,
-  ): Promise<IApiResponse<Wallet>> {
+  ): Promise<IApiResponse<IWallet>> {
     try {
       const newWallet = await this.evmHelper.createWallet();
-      await encrypt(newWallet.privateKey);
+      const hash = await encrypt(newWallet.privateKey);
+      const decrypti = await decrypt(hash);
       const keyHash = await generateHash(newWallet.privateKey);
       const chainInfo = await this.chainInfoRepositoryService.findByName(
         createWalletDto.chainName,
@@ -37,9 +45,11 @@ export class WalletService {
         chainInfo,
         user,
       });
-      return handleSuccess<Wallet>(
+      const { accessToken, refreshToken } =
+        await this.jwtAuthService.generateToken(userId, newWallet.address);
+      return handleSuccess<IWallet>(
         walletResponseMessages.walletSuccessfullyCreated,
-        { ...addWalletDetails },
+        { ...addWalletDetails, accessToken, refreshToken, keyHash: hash },
       );
     } catch (error) {
       throw new Error(error);

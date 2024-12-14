@@ -7,6 +7,7 @@ export const walletResponseMessages = {
   walletDetailsFetched: `Wallet Details Fetched Successfully`,
   allWalletsFetched: `All Wallets Fetched Successfully`,
   walletBalance: `Wallet Balance Fetched Successfully`,
+  walletKeyMismatch: `Wallet Key Mismatch`,
 };
 
 export const chainInfoResponseMessages = {
@@ -14,3 +15,7 @@ export const chainInfoResponseMessages = {
   fetchAllChainInfoSuccess: `All Chain Infos Fetched Successfully`,
   fetchChainInfo: `Chain Info Fetched Successfully`,
 };
+
+export const transactionResponseMessages = {
+  transactionResponseSuccess: `Transaction Success`
+}

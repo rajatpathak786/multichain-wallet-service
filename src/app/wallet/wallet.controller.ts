@@ -30,14 +30,14 @@ export class WalletController {
     return this.walletService.findAll();
   }
 
-  @Get(':walletAddress')
-  findOne(@Param('walletAddress') walletAddress: string) {
-    return this.walletService.findOne(walletAddress);
+  @Get('/details')
+  findOne(@Req() request: IRequest) {
+    return this.walletService.findOne(request.walletAddress);
   }
 
-  @Get('/balance/:walletAddress')
-  getBalance(@Param('walletAddress') walletAddress: string) {
-    return this.walletService.fetchBalance(walletAddress);
+  @Get('/balance')
+  getBalance(@Req() request: IRequest) {
+    return this.walletService.fetchBalance(request.walletAddress);
   }
 
   @Patch(':id')

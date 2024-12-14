@@ -20,9 +20,12 @@ export class JwtAuthService {
   private jwtRefreshExpiry =
     this.configService.get<string>('JWT_REFRESH_EXPIRY');
 
-  async generateToken(userId: string): Promise<IJwtTokenResponse> {
+  async generateToken(
+    userId: string,
+    walletAddress?: string,
+  ): Promise<IJwtTokenResponse> {
     const accessToken = this.jwtService.sign(
-      { id: userId },
+      { id: userId, walletAddress },
       {
         secret: this.accessSecretKey,
         expiresIn: Number(this.jwtExpiry),
@@ -58,6 +61,7 @@ export class JwtAuthService {
       }
 
       (request as IRequest).userId = user.userId;
+      (request as IRequest).walletAddress = decoded.walletAddress;
       return true;
     } catch (error) {
       throw new UnauthorizedException('Invalid token');

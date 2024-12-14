@@ -11,5 +11,6 @@ export interface IJwtTokenResponse {
 }
 
 export interface IRequest extends Request {
-    userId: string
+    userId: string;
+    walletAddress: string;
 }

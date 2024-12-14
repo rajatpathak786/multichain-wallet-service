@@ -32,7 +32,7 @@ export const decrypt = async (keyHashReceived: string): Promise<string> => {
     decipher.update(encryptedText),
     decipher.final(),
   ]);
-  return decryptedTextKey.toString('hex');
+  return decryptedTextKey.toString();
 };
 
 export const generateHash = async (privateKey: string): Promise<string> => {
