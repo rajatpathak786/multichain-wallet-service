@@ -11,6 +11,7 @@ import { WalletRepositoryService } from './entities/wallet.repository.service';
 import { EVMHelper } from '@helpers/evm.helpers.service';
 import { ChainInfoRepositoryService } from '@chain-info/entities/chain-info.repository.service';
 import { ChainInfo } from '@chain-info/entities/chain-info.entity';
+import { SolanaHelper } from '@helpers/solana.helpers.service';
 
 @Module({
   imports: [TypeOrmModule.forFeature([User, Wallet, ChainInfo]), JwtModule],
@@ -22,6 +23,7 @@ import { ChainInfo } from '@chain-info/entities/chain-info.entity';
     ChainInfoRepositoryService,
     JwtAuthService,
     EVMHelper,
+    SolanaHelper
   ],
 })
 export class WalletModule {}

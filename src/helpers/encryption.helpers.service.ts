@@ -48,6 +48,17 @@ export const checkKeyMatch = async (
   return await bcrypt.compare(decryptHash, dbHash);
 };
 
+export const uint8ArrayToBase64 = (arr: Uint8Array): string => {
+  return btoa(String.fromCharCode(...arr));
+};
+
+export const base64ToUint8Array = (base64: string): Uint8Array => {
+  const binaryString = atob(base64);
+  return new Uint8Array(
+    binaryString.split('').map((char) => char.charCodeAt(0)),
+  );
+};
+
 const getEncryptionKey = async (): Promise<Buffer> => {
   const configService = new ConfigService();
   const passwordKey = configService.get<string>('ENCRYPTION_KEY');

@@ -9,3 +9,8 @@ export interface IWallet extends Wallet {
   accessToken: string;
   refreshToken: string;
 }
+
+export interface ICreateWalletSolana {
+  address: string;
+  privateKey: Uint8Array;
+}

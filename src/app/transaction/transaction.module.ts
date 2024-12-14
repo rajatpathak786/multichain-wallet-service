@@ -11,6 +11,7 @@ import { UserRepositoryService } from '@user/entities/user.repository.service';
 import { User } from '@user/entities/user.entity';
 import { Transaction } from './entities/transaction.entity';
 import { TransactionRepositoryService } from './entities/transaction.repository.service';
+import { SolanaHelper } from '@helpers/solana.helpers.service';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Wallet, User, Transaction]), JwtModule],
@@ -18,6 +19,7 @@ import { TransactionRepositoryService } from './entities/transaction.repository.
   providers: [
     TransactionService,
     EVMHelper,
+    SolanaHelper,
     WalletRepositoryService,
     UserRepositoryService,
     TransactionRepositoryService,
