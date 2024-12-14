@@ -14,7 +14,10 @@ export class UserService {
     try {
       const createUser = await this.userRepositoryService.create(createUserDto);
       const { accessToken, refreshToken } =
-        await this.jwtAuthService.generateToken(createUser.userId);
+        await this.jwtAuthService.generateToken(
+          createUser.userId,
+          createUser.role,
+        );
       return {
         message: `User successfully created`,
         data: { ...createUser, accessToken, refreshToken },

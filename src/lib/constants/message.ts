@@ -17,5 +17,11 @@ export const chainInfoResponseMessages = {
 };
 
 export const transactionResponseMessages = {
-  transactionResponseSuccess: `Transaction Success`
-}
+  transactionResponseSuccess: `Transaction Success`,
+};
+
+export const tokenResponseMessages = {
+  tokenAddedSuccess: `Token successfully added`,
+  tokenDetailsFetchSuccess: `Token Details Fetched Successfully`,
+  allTokenDetailsFetched: `All Token Details Fetched`,
+};

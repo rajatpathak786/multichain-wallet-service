@@ -7,6 +7,11 @@ import {
   SystemProgram,
   Transaction,
 } from '@solana/web3.js';
+import {
+  getAccount,
+  getAssociatedTokenAddress,
+  TokenAccountNotFoundError,
+} from '@solana/spl-token';
 
 @Injectable()
 export class SolanaHelper {
@@ -45,5 +50,35 @@ export class SolanaHelper {
     );
     const signature = await this.connection.sendTransaction(tx, [fromKeyPair]);
     return signature;
+  }
+
+  async fetchTokenBalance(
+    walletAddress: string,
+    tokenAddress: string,
+    rpcUrl: string,
+  ): Promise<string> {
+    this.connection = new Connection(rpcUrl, 'confirmed');
+    const walletPublicKey = new PublicKey(walletAddress);
+    const tokenMintPublicKey = new PublicKey(tokenAddress);
+
+    try {
+      const tokenAccountAddress = await getAssociatedTokenAddress(
+        tokenMintPublicKey,
+        walletPublicKey,
+      );
+      const tokenAccount = await getAccount(
+        this.connection,
+        tokenAccountAddress,
+      );
+
+      const balance = tokenAccount.amount;
+
+      return balance.toString();
+    } catch (error) {
+      if (error instanceof TokenAccountNotFoundError) {
+        return '0';
+      }
+      throw error;
+    }
   }
 }

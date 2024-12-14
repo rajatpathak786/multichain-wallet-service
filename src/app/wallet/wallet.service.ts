@@ -47,7 +47,11 @@ export class WalletService {
         user,
       });
       const { accessToken, refreshToken } =
-        await this.jwtAuthService.generateToken(userId, newWallet.address);
+        await this.jwtAuthService.generateToken(
+          userId,
+          user.role,
+          newWallet.address,
+        );
       return handleSuccess<IWallet>(
         walletResponseMessages.walletSuccessfullyCreated,
         { ...addWalletDetails, accessToken, refreshToken, keyHash: hash },

@@ -6,6 +6,7 @@ import { IApiResponse } from '@lib/interface';
 import { ChainInfo } from './entities/chain-info.entity';
 import { chainInfoResponseMessages } from '@lib/constants';
 import { ChainName } from '@lib/enum';
+import { ChainNameParamDto } from './dto/chain-name-param.dto';
 
 @Injectable()
 export class ChainInfoService {
@@ -16,8 +17,9 @@ export class ChainInfoService {
     createChainInfoDto: CreateChainInfoDto,
   ): Promise<IApiResponse<ChainInfo>> {
     try {
-      const newChainInfo =
-        await this.chainInfoRepositoryService.create(createChainInfoDto as any);
+      const newChainInfo = await this.chainInfoRepositoryService.create(
+        createChainInfoDto as any,
+      );
       return {
         message: chainInfoResponseMessages.chainInfoAdded,
         data: newChainInfo,
@@ -39,10 +41,13 @@ export class ChainInfoService {
     }
   }
 
-  async findOne(chainName: ChainName): Promise<IApiResponse<ChainInfo>> {
+  async findOne(
+    chainName: ChainNameParamDto,
+  ): Promise<IApiResponse<ChainInfo>> {
     try {
-      const chainInfo =
-        await this.chainInfoRepositoryService.findByName(chainName);
+      const chainInfo = await this.chainInfoRepositoryService.findByName(
+        chainName.name,
+      );
       return {
         message: chainInfoResponseMessages.fetchChainInfo,
         data: chainInfo,

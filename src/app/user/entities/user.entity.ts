@@ -1,3 +1,4 @@
+import { UserRole } from '@lib/enum';
 import { Org } from '@org/entities/org.entity';
 import { Wallet } from '@wallet/entities/wallet.entity';
 import {
@@ -15,6 +16,9 @@ export class User {
 
   @Column({ type: 'varchar', unique: true })
   userName: string;
+
+  @Column({ type: 'enum', enum: UserRole, default: UserRole.User })
+  role: UserRole;
 
   @ManyToOne(() => Org, (org) => org.orgId)
   org: Org;

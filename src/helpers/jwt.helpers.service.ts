@@ -1,7 +1,9 @@
+import { UserRole } from '@lib/enum';
 import { IJwtTokenResponse, IRequest } from '@lib/interface';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
+import { User } from '@user/entities/user.entity';
 import { UserRepositoryService } from '@user/entities/user.repository.service';
 import { Request } from 'express';
 
@@ -22,17 +24,18 @@ export class JwtAuthService {
 
   async generateToken(
     userId: string,
+    userRole: UserRole,
     walletAddress?: string,
   ): Promise<IJwtTokenResponse> {
     const accessToken = this.jwtService.sign(
-      { id: userId, walletAddress },
+      { id: userId, walletAddress, userRole },
       {
         secret: this.accessSecretKey,
         expiresIn: Number(this.jwtExpiry),
       },
     );
     const refreshToken = this.jwtService.sign(
-      { id: userId, token: accessToken },
+      { id: userId, walletAddress, userRole, token: accessToken },
       {
         secret: this.refreshSecretKey,
         expiresIn: Number(this.jwtRefreshExpiry),
@@ -41,7 +44,7 @@ export class JwtAuthService {
     return { accessToken, refreshToken };
   }
 
-  async validateToken(request: Request): Promise<boolean> {
+  async decodeToken(request: Request): Promise<any> {
     const authHeader = request.headers?.authorization;
     if (!authHeader || !authHeader.startsWith('Bearer ')) {
       throw new UnauthorizedException(
@@ -51,10 +54,17 @@ export class JwtAuthService {
     const token = authHeader.split(' ')[1];
 
     try {
-      const decoded = this.jwtService.verify(token, {
+      return this.jwtService.verify(token, {
         secret: this.accessSecretKey,
       });
+    } catch (error) {
+      throw new UnauthorizedException('Invalid token');
+    }
+  }
 
+  async validateTokenWeb(request: Request): Promise<boolean> {
+    try {
+      const decoded = await this.decodeToken(request);
       const user = await this.userRepositoryService.findById(decoded.id);
       if (!user) {
         throw new UnauthorizedException('Invalid token');
@@ -66,5 +76,19 @@ export class JwtAuthService {
     } catch (error) {
       throw new UnauthorizedException('Invalid token');
     }
+  }
+
+  async validateTokenAdmin(request: Request): Promise<boolean> {
+    const decoded = await this.decodeToken(request);
+    const user = await this.userRepositoryService.findById(decoded.id);
+    if (!user) {
+      throw new UnauthorizedException('Invalid token');
+    }
+    if (decoded.userRole != UserRole.Admin) {
+      throw new UnauthorizedException('User is not admin');
+    }
+    (request as IRequest).userId = user.userId;
+    (request as IRequest).walletAddress = decoded.walletAddress;
+    return true;
   }
 }

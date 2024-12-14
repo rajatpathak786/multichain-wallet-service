@@ -1,3 +1,4 @@
+import { fetchBalanceAbi } from '@lib/constants';
 import { ICreateWallet } from '@lib/interface';
 import { Injectable } from '@nestjs/common';
 import { ethers, formatEther, parseEther } from 'ethers';
@@ -32,5 +33,22 @@ export class EVMHelper {
       value: parseEther(amount),
     });
     return tx.hash;
+  }
+
+  async fetchTokenBalance(
+    walletAddress: string,
+    tokenAddress: string,
+    rpcUrl: string,
+  ): Promise<string> {
+    this.provider = new ethers.JsonRpcProvider(rpcUrl);
+    const tokenContract = new ethers.Contract(
+      tokenAddress,
+      fetchBalanceAbi,
+      this.provider,
+    );
+    const balance = await tokenContract.balanceOf(walletAddress);
+    const decimals = 18; // Update as per the token
+    const formattedBalance = ethers.formatUnits(balance, decimals);
+    return formattedBalance;
   }
 }

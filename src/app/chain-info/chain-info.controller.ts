@@ -6,6 +6,7 @@ import {
   Patch,
   Param,
   Delete,
+  UseGuards,
 } from '@nestjs/common';
 import { ChainInfoService } from './chain-info.service';
 import { CreateChainInfoDto } from './dto/create-chain-info.dto';
@@ -13,8 +14,11 @@ import { UpdateChainInfoDto } from './dto/update-chain-info.dto';
 import { IApiResponse } from '@lib/interface';
 import { ChainInfo } from './entities/chain-info.entity';
 import { ChainName } from '@lib/enum';
+import { AdminAuthGuard } from '@guards/admin.guards';
+import { ChainNameParamDto } from './dto/chain-name-param.dto';
 
 @Controller('chain-info')
+@UseGuards(AdminAuthGuard)
 export class ChainInfoController {
   constructor(private readonly chainInfoService: ChainInfoService) {}
 
@@ -31,7 +35,9 @@ export class ChainInfoController {
   }
 
   @Get(':id')
-  findOne(@Param('name') name: ChainName): Promise<IApiResponse<ChainInfo>> {
+  findOne(
+    @Param('name') name: ChainNameParamDto,
+  ): Promise<IApiResponse<ChainInfo>> {
     return this.chainInfoService.findOne(name);
   }
 
