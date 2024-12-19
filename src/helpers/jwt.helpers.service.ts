@@ -3,7 +3,6 @@ import { IJwtTokenResponse, IRequest } from '@lib/interface';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
-import { User } from '@user/entities/user.entity';
 import { UserRepositoryService } from '@user/entities/user.repository.service';
 import { Request } from 'express';
 
